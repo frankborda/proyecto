@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firmas Digitales - Sistema de Registro Civil | SIAMSoft 2025</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/index/icono/mainico.png"
+      rel="shortcut icon"
+      type="image/png"
+    />
+    <style>
+      /* ============================================= */
+      /* VARIABLES Y CONFIGURACIÓN GLOBAL */
+      /* ============================================= */
+      :root {
+        --primary: #005f73;
+        --primary-dark: #004494;
+        --primary-light: #3a7bd5;
+        --secondary: #0a9396;
+        --accent: #94d2bd;
+        --dark: #001219;
+        --light: #f8fafc;
+        --white: #ffffff;
+        --red-accent: #ff0000;
+        --gray: #64748b;
+        --light-gray: #e2e8f0;
+        --border: #cbd5e1;
+        --text-color: #334155;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --radius: 12px;
+        --radius-lg: 16px;
+        --gradient: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--primary-light) 100%
+        );
+        --gradient-dark: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary) 100%
+        );
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text-color);
+        line-height: 1.6;
+        background-color: var(--white);
+        overflow-x: hidden;
+        font-weight: 400;
+      }
+
+      p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: 700;
+        line-height: 1.2;
+        color: var(--dark);
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      section {
+        padding: 6rem 0;
+      }
+
+      /* ============================================= */
+      /* COMPONENTES REUTILIZABLES */
+      /* ============================================= */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--primary);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: var(--transition);
+      }
+
+      .btn:hover:before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn-outline {
+        background: var(--primary);
+        border: 2px solid var(--primary);
+        color: var(--white);
+      }
+
+      .btn-outline:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .section-title h2 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .section-title p {
+        color: var(--gray);
+        font-size: 1.25rem;
+        max-width: 700px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+
+      /* ============================================= */
+      /* BARRA SOCIAL LATERAL */
+      /* ============================================= */
+      .social-bar-container {
+        position: fixed;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%) translateX(-30px);
+        z-index: 2000;
+        opacity: 0;
+        animation: fadeSlideInLeft 1s ease-out forwards;
+        animation-delay: 0.4s;
+      }
+
+      .social-bar {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .social-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        position: relative;
+        transition: all 0.4s ease;
+        text-decoration: none;
+      }
+
+      .social-link i {
+        font-size: 20px;
+        color: #fff;
+        transition: transform 0.3s ease;
+      }
+
+      .social-text {
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 5px 10px;
+        border-radius: 0 4px 4px 0;
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.4s ease;
+        margin-left: 55px;
+      }
+
+      .social-link:hover {
+        width: 60px;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+
+      .social-link:hover i {
+        transform: scale(1.2);
+      }
+
+      .social-link:hover .social-text {
+        opacity: 1;
+        margin-left: 10px;
+      }
+
+      .social-facebook {
+        background-color: #1877f2;
+      }
+      .social-tiktok {
+        background-color: #000000;
+      }
+      .social-twitter {
+        background-color: #1da1f2;
+      }
+      .social-youtube {
+        background-color: #ff0000;
+      }
+      .social-web {
+        background-color: #4caf50;
+      }
+
+      @keyframes fadeSlideInLeft {
+        from {
+          transform: translateY(-50%) translateX(-40px);
+          opacity: 0;
+          filter: blur(5px);
+        }
+        to {
+          transform: translateY(-50%) translateX(0);
+          opacity: 1;
+          filter: blur(0);
+        }
+      }
+
+      /* ============================================= */
+      /* BARRA DE NAVEGACIÓN */
+      /* ============================================= */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.5s ease;
+        z-index: 1000;
+        background-color: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 0px 0px 40px 40px;
+        height: 80px;
+      }
+
+      .navbar.scrolled {
+        background-color: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        padding: 0.8rem 5%;
+      }
+
+      .logo-container {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+      }
+
+      .logo-img {
+        width: 150px;
+        height: auto;
+        transition: all 0.3s ease;
+      }
+
+      .logo-img:hover {
+        transform: scale(1.05);
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 1.5rem;
+      }
+
+      .nav-links a {
+        color: rgb(51, 50, 50);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 0.5rem 0;
+        text-shadow: 1px 1px 3px rgba(250, 247, 247, 0.5);
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background: rgb(14, 12, 12);
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .hamburger-menu {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+        z-index: 1000;
+      }
+
+      .hamburger-menu .bar {
+        height: 3px;
+        width: 100%;
+        background-color: #333;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger-menu.active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+      }
+
+      .hamburger-menu.active .bar:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger-menu.active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+      }
+
+      /* ============================================= */
+      /* HERO SECTION  */
+      /* ============================================= */
+      .hero-signature {
+        background: linear-gradient(135deg, #005f73, #0a9396);
+        padding: 180px 0 100px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+        color: white;
+        height: 100vh;
+      }
+
+      .hero-signature:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -20%;
+        width: 600px;
+        height: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .hero-signature:after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -10%;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 50%;
+        animation: float 8s ease-in-out infinite reverse;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(180deg);
+        }
+      }
+
+      .hero-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-text h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+        color: var(--light);
+      }
+
+      .hero-text p {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        color: var(--white);
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+
+      .hero-visual {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .signature-preview {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        overflow: hidden;
+        width: 100%;
+        max-width: 500px;
+        border: 1px solid var(--light-gray);
+        transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .signature-preview:hover {
+        transform: perspective(1000px) rotateY(0) rotateX(0);
+      }
+
+      .signature-image {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      /* ============================================= */
+      /* BENEFITS SECTION */
+      /* ============================================= */
+      .benefits {
+        background: var(--white);
+      }
+
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+      }
+
+      .benefit-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 3rem 2.5rem;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+        border: 1px solid var(--light-gray);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .benefit-card:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 0;
+        background: var(--gradient);
+        transition: var(--transition);
+      }
+
+      .benefit-card:hover:before {
+        height: 100%;
+      }
+
+      .benefit-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .benefit-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(
+          135deg,
+          rgba(0, 86, 179, 0.1) 0%,
+          rgba(10, 147, 150, 0.1) 100%
+        );
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: var(--primary);
+        font-size: 2rem;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .benefit-card:hover .benefit-icon {
+        background: var(--gradient);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .benefit-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .benefit-card p {
+        color: var(--gray);
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
+        flex-grow: 1;
+      }
+
+      /* ============================================= */
+      /* SECURITY SECTION */
+      /* ============================================= */
+      .security {
+        background: linear-gradient(135deg, var(--light) 0%, #f0f4f8 100%);
+      }
+
+      .security-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .security-item {
+        text-align: center;
+        padding: 2.5rem;
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+      }
+
+      .security-item:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .security-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background: var(--gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+      }
+
+      .security-item h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+
+      /* ============================================= */
+      /* PROCESS SECTION */
+      /* ============================================= */
+      .process {
+        background: var(--white);
+      }
+
+      .process-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2.5rem;
+        position: relative;
+      }
+
+      .process-step {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-md);
+        transition: var(--transition);
+        position: relative;
+        border: 1px solid var(--light-gray);
+      }
+
+      .process-step:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .step-number {
+        width: 70px;
+        height: 70px;
+        background: var(--gradient);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin: 0 auto 2rem;
+        font-size: 1.75rem;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+      }
+
+      .step-number:before {
+        content: "";
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border: 2px solid var(--primary-light);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      .process-step h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+      }
+
+      .process-step p {
+        color: var(--gray);
+        line-height: 1.7;
+      }
+
+      /* ============================================= */
+      /* CARRUSEL 3D SECTION */
+      /* ============================================= */
+      .firmas {
+        background: linear-gradient(135deg, var(--light) 0%, #f0f4f8 100%);
+        padding: 5rem 0;
+      }
+
+      /* Contenedor del carrusel 3D  */
+      .carousel-container {
+        width: 100%;
+        height: 500px;
+        margin: 0 auto 60px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .carousel {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .carousel-item {
+        position: absolute;
+        width: 500px;
+        height: 400px;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        opacity: 0.7;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .carousel-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+
+      .carousel-item:hover .carousel-img {
+        transform: scale(1.05);
+      }
+
+      .carousel-caption {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(73, 92, 87, 0.85);
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+        transform: translateY(0);
+        transition: var(--transition);
+      }
+
+      .carousel-item:hover .carousel-caption {
+        background: rgba(7, 204, 164, 0.95);
+      }
+
+      .carousel-caption h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      .carousel-caption p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      /* Controles de navegación */
+      .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 60px;
+        background: white;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        color: var(--primary);
+        font-size: 1.4rem;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .carousel-control:hover {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      .carousel-control.prev {
+        left: 20px;
+      }
+
+      .carousel-control.next {
+        right: 20px;
+      }
+
+      /* Indicadores */
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        margin: 40px 0;
+        gap: 15px;
+      }
+
+      .indicator {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .indicator.active {
+        background: var(--primary);
+        transform: scale(1.3);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+      }
+
+      /* Efecto de borde luminoso para las imágenes */
+      .carousel-item::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary), var(--primary));
+        border-radius: 18px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .carousel-item.active::after {
+        opacity: 1;
+        animation: borderGlow 2s infinite;
+      }
+
+      @keyframes borderGlow {
+        0% { opacity: 0.7; }
+        50% { opacity: 1; }
+        100% { opacity: 0.7; }
+      }
+
+      /* ============================================= */
+      /* MODAL STYLES */
+      /* ============================================= */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 1rem;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-container {
+        background: white;
+        border-radius: var(--radius-lg);
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: var(--shadow-xl);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--primary);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+
+      .modal-close:hover {
+        background: var(--secondary);
+        transform: scale(1.1);
+      }
+
+      .modal-content {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .modal-img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        background: #f8fafc;
+      }
+
+      .modal-text-content {
+        padding: 2.5rem;
+        background: white;
+      }
+
+      .modal-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        text-align: center;
+        line-height: 1.3;
+      }
+
+      .modal-text {
+        color: var(--gray);
+        line-height: 1.7;
+        text-align: center;
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      /* ============================================= */
+      /* CTA SECTION */
+      /* ============================================= */
+      .cta-section {
+        background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+        color: white;
+        text-align: center;
+        padding: 80px 0;
+      }
+
+      .cta-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: white;
+      }
+
+      .cta-content p {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+      }
+
+      .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      /* ============================================= */
+      /* FOOTER */
+      /* ============================================= */
+      footer {
+        background: var(--dark);
+        color: white;
+        padding: 60px 0 30px;
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-column {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      .footer-column h3 {
+        color: white;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 10px;
+      }
+
+      .footer-column h3:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 12px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      .footer-links a:hover {
+        color: white;
+        padding-left: 5px;
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .footer-social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .footer-social-links a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 45px;
+        height: 45px;
+        background-color: rgba(29, 201, 231, 0.2);
+        border-radius: 50%;
+        color: white;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
+      }
+
+      .footer-social-links a:hover {
+        background-color: var(--primary);
+        color: var(--white);
+        transform: translateY(-3px);
+      }
+
+      /* ============================================= */
+      /* RESPONSIVE DESIGN */
+      /* ============================================= */
+      @media (max-width: 1200px) {
+        .hero-text h1 {
+          font-size: 2.5rem;
+        }
+
+        .container {
+          max-width: 1140px;
+        }
+
+        .benefits-grid {
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .security-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+      }
+
+      @media (max-width: 992px) {
+        .hero-content {
+          grid-template-columns: 1fr;
+          text-align: center;
+          gap: 2rem;
+        }
+
+        .hero-text {
+          order: 1;
+        }
+
+        .hero-visual {
+          order: 0;
+          margin-bottom: 2rem;
+        }
+
+        .nav-links {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 70%;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.95);
+          backdrop-filter: blur(10px);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: right 0.5s ease;
+          z-index: 999;
+          display: flex !important;
+        }
+
+        .nav-links.active {
+          right: 0;
+        }
+
+        .nav-links li {
+          margin: 1.5rem 0;
+        }
+
+        .nav-links a {
+          font-size: 1.2rem;
+          color: white;
+          padding: 0.5rem 1rem;
+        }
+
+        .hamburger-menu {
+          display: flex;
+        }
+
+        .hero-actions {
+          justify-content: center;
+        }
+
+        .benefits-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .security-grid {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .process-steps {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 0.8rem 5%;
+          height: 70px;
+        }
+
+        .hero-signature {
+          padding: 140px 0 60px;
+          margin-top: 70px;
+          min-height: auto;
+          height: auto;
+        }
+
+        .hero-text h1 {
+          font-size: 2rem;
+        }
+
+        .hero-text p {
+          font-size: 1.1rem;
+        }
+
+        .section-title h2 {
+          font-size: 2rem;
+        }
+
+        .section-title p {
+          font-size: 1.1rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .benefit-card {
+          padding: 2rem 1.5rem;
+        }
+
+        .benefit-icon {
+          width: 70px;
+          height: 70px;
+          font-size: 1.8rem;
+        }
+
+        .security-item {
+          padding: 2rem 1.5rem;
+        }
+
+        .security-icon {
+          width: 70px;
+          height: 70px;
+          font-size: 1.8rem;
+        }
+
+        .process-step {
+          padding: 2rem 1.5rem;
+        }
+
+        .step-number {
+          width: 60px;
+          height: 60px;
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .step-number:before {
+          width: 70px;
+          height: 70px;
+        }
+
+        
+        .social-bar-container {
+          top: auto;
+          bottom: 80px;
+          left: 50%;
+          transform: translateX(-50%) translateY(100px);
+          animation: fadeSlideInBottom 1s ease-out forwards;
+          animation-delay: 0.4s;
+        }
+
+        .social-bar {
+          flex-direction: row;
+          border-radius: 12px 12px 0 0;
+          width: max-content;
+          max-width: 100vw;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          padding: 5px;
+        }
+
+        .social-link {
+          width: 45px;
+          height: 45px;
+          flex-shrink: 0;
+        }
+
+        .social-link:hover {
+          width: 45px;
+          height: 55px;
+          border-radius: 0;
+        }
+
+        .social-text {
+          position: fixed;
+          left: 50%;
+          top: auto;
+          bottom: 130px;
+          transform: translateX(-50%);
+          background-color: rgba(0, 0, 0, 0.8);
+          color: white;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          margin-left: 0;
+          white-space: nowrap;
+          z-index: 2001;
+        }
+
+        .social-link:hover .social-text {
+          opacity: 1;
+          margin-left: 0;
+        }
+
+        @keyframes fadeSlideInBottom {
+          from {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+            filter: blur(5px);
+          }
+          to {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            filter: blur(0);
+          }
+        }
+
+        /* Ajustes para el carrusel en móviles */
+        .carousel-container {
+          height: 350px;
+        }
+
+        .carousel-item {
+          width: 300px;
+          height: 250px;
+        }
+
+        .carousel-caption {
+          padding: 1rem;
+        }
+
+        .carousel-caption h3 {
+          font-size: 1.1rem;
+        }
+
+        .carousel-caption p {
+          font-size: 0.8rem;
+        }
+
+        .carousel-control {
+          width: 40px;
+          height: 40px;
+          font-size: 1rem;
+        }
+
+        .carousel-control.prev {
+          left: 10px;
+        }
+
+        .carousel-control.next {
+          right: 10px;
+        }
+
+        .modal-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .modal-content {
+    flex-direction: column;
+  }
+
+  .modal-img {
+    height: 250px;
+  }
+
+  .modal-text-content {
+    padding: 1.5rem;
+  }
+
+        /* Ajustes para el footer en móviles */
+        .footer-content {
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .footer-column {
+          min-width: 100%;
+          text-align: center;
+        }
+
+        .footer-column h3:after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .footer-social-links {
+          justify-content: center;
+        }
+      }
+
+      /* Móviles pequeños */
+      @media (max-width: 480px) {
+        section {
+          padding: 4rem 0;
+        }
+
+        .hero-signature {
+          padding: 120px 0 40px;
+        }
+
+        .hero-text h1 {
+          font-size: 1.8rem;
+        }
+
+        .hero-text p {
+          font-size: 1rem;
+        }
+
+        .section-title h2 {
+          font-size: 1.8rem;
+        }
+
+        .section-title p {
+          font-size: 1rem;
+        }
+
+        .benefit-card,
+        .security-item,
+        .process-step {
+          padding: 1.5rem 1rem;
+        }
+
+        .benefit-icon,
+        .security-icon {
+          width: 60px;
+          height: 60px;
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+          width: 50px;
+          height: 50px;
+          font-size: 1.3rem;
+          margin-bottom: 1.2rem;
+        }
+
+        .step-number:before {
+          width: 60px;
+          height: 60px;
+        }
+
+        .cta-content h2 {
+          font-size: 1.8rem;
+        }
+
+        .cta-content p {
+          font-size: 1rem;
+        }
+
+        .btn {
+          padding: 0.8rem 1.5rem;
+          font-size: 0.9rem;
+          width: 100%;
+          justify-content: center;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+        }
+
+        .signature-preview {
+          max-width: 300px;
+          transform: none;
+        }
+
+        .security-grid {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .process-steps {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+
+        .screenshot {
+          padding: 3rem 0;
+        }
+
+        .modal-caption {
+          font-size: 0.9rem;
+          padding: 10px 15px;
+        }
+      }
+
+      /* Pantallas muy pequeñas */
+      @media (max-width: 360px) {
+        .hero-text h1 {
+          font-size: 1.6rem;
+        }
+
+        .benefits-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .btn {
+          padding: 0.7rem 1.2rem;
+          font-size: 0.85rem;
+        }
+
+        .social-bar {
+          padding: 5px;
+        }
+
+        .social-link {
+          width: 40px;
+          height: 40px;
+        }
+
+        .social-link i {
+          font-size: 16px;
+        }
+
+        .section-title {
+          margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+          font-size: 1.6rem;
+        }
+
+        .process-step h3 {
+          font-size: 1.2rem;
+        }
+
+        .security-item h3 {
+          font-size: 1.2rem;
+        }
+      }
+
+      /* Ajustes específicos para tablets en landscape */
+      @media (max-width: 992px) and (orientation: landscape) {
+        .hero-signature {
+          padding: 120px 0 60px;
+          min-height: auto;
+        }
+
+        .nav-links {
+          overflow-y: auto;
+        }
+
+        .hero-content {
+          gap: 2rem;
+        }
+      }
+
+      /* Ajustes para alta resolución */
+      @media (min-width: 1400px) {
+        .container {
+          max-width: 1320px;
+        }
+
+        .hero-text h1 {
+          font-size: 4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ========== BARRA SOCIAL IZQUIERDA ========== -->
+    <div class="social-bar-container">
+      <div class="social-bar">
+        <a
+          href="https://www.facebook.com/SIAMSoftSftwareparamunicipalidades/"
+          target="_blank"
+          class="social-link social-facebook"
+        >
+          <i class="fab fa-facebook-f"></i>
+          <span class="social-text">Facebook</span>
+        </a>
+        <a
+          href="https://www.tiktok.com/@siamsoft_peru"
+          target="_blank"
+          class="social-link social-tiktok"
+        >
+          <i class="fab fa-tiktok"></i>
+          <span class="social-text">TikTok</span>
+        </a>
+        <a
+          href="https://x.com/siamsoft"
+          target="_blank"
+          class="social-link social-twitter"
+        >
+          <i class="fab fa-twitter"></i>
+          <span class="social-text">Twitter</span>
+        </a>
+        <a
+          href="https://www.youtube.com/@siamsoft"
+          target="_blank"
+          class="social-link social-youtube"
+        >
+          <i class="fab fa-youtube"></i>
+          <span class="social-text">YouTube</span>
+        </a>
+        <a
+          href="https://nixi32.github.io/web/proyecto/prueba.html"
+          target="_blank"
+          class="social-link social-web"
+        >
+          <i class="fas fa-globe"></i>
+          <span class="social-text">Web</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ========== BARRA DE NAVEGACIÓN ========== -->
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="logo-container">
+        <img
+          src="assets/index/imagenes/logo_azul.png"
+          width="150px"
+          alt="Siam Logo"
+          class="logo-img"
+        />
+      </a>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#beneficios">Beneficios</a></li>
+        <li><a href="#seguridad">Seguridad</a></li>
+        <li><a href="#proceso">Proceso</a></li>
+        <li><a href="#contactar">Contactar</a></li>
+      </ul>
+
+      <div class="hamburger-menu" id="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </nav>
+
+    <!-- ========== HERO SECTION  ========== -->
+    <section class="hero-signature" id="">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <h1>Firmas Digitales Integradas</h1>
+          <p>
+            Sistema de firmas digitales integrado para máxima seguridad y
+            validez legal de documentos. Garantice la autenticidad e integridad
+            de todos sus registros civiles.
+          </p>
+          <div class="hero-actions">
+            <a
+              href="https://wa.me/51996909051?text=Hola,%20deseo%20más%20información%20sobre%20el%20sistema%20de%20firmas%20digitales"
+              target="_blank"
+              class="btn"
+            >
+              <i class="fas fa-calendar-check"></i> Solicitar Demo
+            </a>
+            <a href="#beneficios" class="btn btn-outline">
+              <i class="fas fa-play-circle"></i> Ver Beneficios
+            </a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="signature-preview">
+            <img
+              src="assets/index/hero/acta-matrimonio.png"
+              alt="Firmas Digitales - Sistema de Registro Civil"
+              class="signature-image"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== BENEFITS SECTION ========== -->
+    <section class="benefits" id="beneficios">
+      <div class="container">
+        <div class="section-title">
+          <h2>Ventajas de las Firmas Digitales</h2>
+          <p>Beneficios tangibles para su municipalidad y ciudadanos</p>
+        </div>
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Máxima Seguridad</h3>
+            <p>
+              Cifrado de nivel bancario y autenticación multifactor para
+              garantizar la integridad de los documentos.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-gavel"></i>
+            </div>
+            <h3>Validez Legal Total</h3>
+            <p>
+              Cumplimiento con normativas nacionales e internacionales para
+              validez jurídica ante cualquier institución.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Procesamiento Rápido</h3>
+            <p>
+              Firma de documentos en segundos, eliminando tiempos de espera y
+              trámites presenciales.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-file-contract"></i>
+            </div>
+            <h3>Autenticidad Garantizada</h3>
+            <p>
+              Verificación instantánea de la identidad del firmante y protección
+              contra falsificaciones.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-sync-alt"></i>
+            </div>
+            <h3>Integración Perfecta</h3>
+            <p>
+              Conexión nativa con todos los módulos del sistema y plataformas
+              externas autorizadas.
+            </p>
+          </div>
+          <div class="benefit-card">
+            <div class="benefit-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Acceso Remoto</h3>
+            <p>
+              Capacidad de firmar documentos desde cualquier lugar con conexión
+              a internet, facilitando trámites.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SECURITY SECTION ========== -->
+    <section class="security" id="seguridad">
+      <div class="container">
+        <div class="section-title">
+          <h2>Características de Seguridad</h2>
+          <p>
+            Tecnología avanzada para proteger la integridad de sus documentos
+          </p>
+        </div>
+        <div class="security-grid">
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-key"></i>
+            </div>
+            <h3>Criptografía Avanzada</h3>
+            <p>
+              Algoritmos de encriptación de 256 bits para máxima protección de
+              datos
+            </p>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-fingerprint"></i>
+            </div>
+            <h3>Autenticación Biométrica</h3>
+            <p>
+              Verificación de identidad mediante huella digital o reconocimiento
+              facial
+            </p>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-qrcode"></i>
+            </div>
+            <h3>Códigos QR de Validación</h3>
+            <p>
+              Verificación instantánea de autenticidad mediante códigos QR
+              únicos
+            </p>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-history"></i>
+            </div>
+            <h3>Auditoría Completa</h3>
+            <p>
+              Registro detallado de todas las acciones realizadas en el sistema
+            </p>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3>Certificados Digitales</h3>
+            <p>
+              Emisión de certificados con validez legal ante entidades
+              certificadoras
+            </p>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">
+              <i class="fas fa-shield-virus"></i>
+            </div>
+            <h3>Protección Antifraude</h3>
+            <p>
+              Detección y prevención de intentos de falsificación o alteración
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROCESS SECTION ========== -->
+    <section class="process" id="proceso">
+      <div class="container">
+        <div class="section-title">
+          <h2>Proceso de Firma Digital</h2>
+          <p>Flujo simplificado para firmas seguras y válidas legalmente</p>
+        </div>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-number">1</div>
+            <h3>Generación de Documento</h3>
+            <p>
+              Creación automática del documento con todos los datos validados y
+              formato oficial.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">2</div>
+            <h3>Autenticación del Firmante</h3>
+            <p>
+              Verificación de identidad mediante métodos seguros y generación de
+              certificado digital.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">3</div>
+            <h3>Aplicación de Firma</h3>
+            <p>
+              Firma digital del documento con marca de tiempo y hash
+              criptográfico único.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">4</div>
+            <h3>Validación y Almacenamiento</h3>
+            <p>
+              Verificación de integridad y archivado seguro en repositorio
+              digital certificado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== FIRMAS SECTION ========== -->
+    <section class="firmas">
+      <div class="container">
+        <div class="section-title">
+          <h2>Vista Previa del Sistema</h2>
+          <p>
+            Conozca cómo se ve nuestra interfaz de Registro Civil
+          </p>
+        </div>
+
+        <!-- Carrusel 3D  -->
+        <div class="carousel-container">
+          <div class="carousel" id="carousel">
+            <!-- Las imágenes se generarán dinámicamente con JavaScript -->
+          </div>
+
+          <button class="carousel-control prev" id="prev">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="carousel-control next" id="next">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <div class="carousel-indicators" id="indicators">
+          <!-- Los indicadores se generarán dinámicamente con JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal Structure -->
+    <div id="modal-overlay" class="modal-overlay">
+      <div class="modal-container">
+        <button class="modal-close" id="modal-close">&times;</button>
+        <div class="modal-content">
+          <img id="modal-img" src="" alt="" class="modal-img" />
+          <div class="modal-text-content">
+            <h2 id="modal-title" class="modal-title"></h2>
+            <p id="modal-text" class="modal-text"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section class="cta-section" id="contactar">
+      <div class="container">
+        <div class="cta-content">
+          <h2>¿Listo para Implementar Firmas Digitales?</h2>
+          <p>
+            Contáctenos hoy mismo para una demostración personalizada y descubra
+            cómo las firmas digitales pueden transformar la seguridad y validez
+            legal de sus documentos.
+          </p>
+          <div class="cta-buttons">
+            <a
+              href="https://wa.me/51996909051?text=Hola,%20deseo%20agendar%20una%20demostración%20del%20sistema%20de%20firmas%20digitales"
+              target="_blank"
+              class="btn"
+            >
+              Contactar
+            </a>
+            <a href="index.html" class="btn btn-outline">
+              <i class="fas fa-arrow-left"></i> Volver al Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!------ PIE DE PAGINA (FOOTER) -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>SIAMsoft</h3>
+            <p>
+              Sistema integral de Administración Municipal-Transformando la
+              gestión pública local a través de tecnología moderna y adaptada.
+            </p>
+            <div class="footer-social-links">
+              <a
+                href="https://www.facebook.com/SIAMSoftSftwareparamunicipalidades/"
+                target="_blank"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/roberto-centeno-chicani-027a6612a/?originalSubdomain=pe"
+                target="_blank"
+              >
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="https://x.com/siamsoft" target="_blank">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-column">
+            <h3>Módulos</h3>
+            <ul class="footer-links">
+              <li>
+                <a
+                  href="https://nixi32.github.io/gestion_tributaria/pagina_siam/index.html"
+                >
+                  Gestión Tributaria y Caja
+                </a>
+              </li>
+              <li>
+                <a href="https://shisui9569.github.io/urbano/catastro/cat.html">
+                  Catastro Urbano
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://shisui9569.github.io/planilla/planillas/index.html"
+                >
+                  Control de Asistencia y Planillas
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://franklindevs.github.io/Proyectos/tramite-documentario/index.html"
+                >
+                  Trámite Documentario
+                </a>
+              </li>
+              <li><a href="#">Archivo Central</a></li>
+              <li>
+                <a
+                  href="https://frankborda.github.io/Proyectos/vaso-leche/index.html"
+                >
+                  Vaso de Leche
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Enlaces Rápidos</h3>
+            <ul class="footer-links">
+              <li><a href="index.html">Inicio</a></li>
+              <li><a href="#beneficios">Beneficios</a></li>
+              <li><a href="#seguridad">Seguridad</a></li>
+              <li><a href="#proceso">Proceso</a></li>
+              <li><a href="#contactar">Contactar</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h3>Contacto</h3>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> Pasaje Washington Nº107 Urb.
+              Amauta
+            </p>
+            <p><i class="fas fa-phone"></i> +51 996 909 051</p>
+            <p><i class="fas fa-envelope"></i> rs.siamsoft@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2025 SIAMsoft. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // =============================================
+      // NAVBAR SCROLL EFFECT
+      // =============================================
+      window.addEventListener("scroll", function () {
+        const navbar = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // =============================================
+      // MOBILE MENU TOGGLE - CORREGIDO
+      // =============================================
+      const hamburgerMenu = document.getElementById("hamburger-menu");
+      const navLinks = document.getElementById("nav-links");
+
+      if (hamburgerMenu) {
+        hamburgerMenu.addEventListener("click", () => {
+          hamburgerMenu.classList.toggle("active");
+          navLinks.classList.toggle("active");
+        });
+      }
+
+      // Cerrar menú al hacer clic en un enlace
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburgerMenu.classList.remove("active");
+          navLinks.classList.remove("active");
+        });
+      });
+
+      // =============================================
+      // SMOOTH SCROLLING
+      // =============================================
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+
+            // Close mobile menu if open
+            if (window.innerWidth <= 768) {
+              navLinks.classList.remove("active");
+              hamburgerMenu.classList.remove("active");
+            }
+          }
+        });
+      });
+
+      // =============================================
+      // INTERSECTION OBSERVER FOR ANIMATIONS
+      // =============================================
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      // Observe elements for animation
+      document
+        .querySelectorAll(
+          ".benefit-card, .process-step, .security-item, .compliance-item"
+        )
+        .forEach((el) => {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(30px)";
+          el.style.transition = "all 0.6s ease";
+          observer.observe(el);
+        });
+
+         // =============================================
+      // DATOS PARA LOS MODALES Y CARRUSEL
+      // =============================================
+      const modalData = {
+          modal1: {
+              title: "Interfaz del Registro Civil",
+              image: "assets/firmas-digitales/imagen.png",
+              text: "Digitalización de datos, gestionando un acta desde una interfaz moderna",
+          },
+          modal2: {
+              title: "Firma de Digitalizacion del Documento",
+              image: "assets/firmas-digitales/firma-digital.png",
+              text: "Firma electronica de un acta o documento PDF",
+          },
+          modal3: {
+              title: "Proteccion de Documento Digital",
+              image: "assets/firmas-digitales/conexion-segura.png",
+              text: "Seguridad y proteccion de datos",
+          },
+          modal4: {
+              title: "Documento digital de sello y firma electrónica",
+              image: "assets/firmas-digitales/acta-nacimiento-digital.png",
+              text: "Acta de nacimiento del documento PDF con una firma digital certificada y sello de tiempo.",
+          },
+      };
+
+      const firmasData = [
+          {
+              id: "modal1",
+              image: "assets/firmas-digitales/imagen.png",
+              title: "Interfaz del Registro Civil",
+              description: "Digitalización de datos, gestionando un acta desde una interfaz moderna",
+          },
+          {
+              id: "modal2",
+              image: "assets/firmas-digitales/firma-digital.png",
+              title: "Firma de Digitalizacion del Documento",
+              description: "Firma electronica de un acta o documento PDF",
+          },
+          {
+              id: "modal3",
+              image: "assets/firmas-digitales/conexion-segura.png",
+              title: "Proteccion de Documento Digital",
+              description: "Seguridad y proteccion de datos",
+          },
+          {
+              id: "modal4",
+              image: "assets/firmas-digitales/acta-nacimiento-digital.png",
+              title: "Documento digital de sello y firma electrónica",
+              description: "Acta de nacimiento del documento PDF con una firma digital certificada y sello de tiempo.",
+          },
+      ];
+
+      // =============================================
+      // CONFIGURACIÓN DEL CARRUSEL DE FUNCIONAMIENTO
+      // =============================================
+      function setupFirmasCarousel() {
+          const carousel = document.getElementById("carousel");
+          const indicatorsContainer = document.getElementById("indicators");
+          const prevButton = document.getElementById("prev");
+          const nextButton = document.getElementById("next");
+          const modalOverlay = document.getElementById("modal-overlay");
+          const modalClose = document.getElementById("modal-close");
+          const modalImg = document.getElementById("modal-img");
+          const modalTitle = document.getElementById("modal-title");
+          const modalText = document.getElementById("modal-text");
+
+          // Verificar que todos los elementos existan
+          if (!carousel || !indicatorsContainer || !prevButton || !nextButton || !modalOverlay) {
+              console.error("No se encontraron todos los elementos del carrusel");
+              return;
+          }
+
+          const totalItems = firmasData.length;
+          let currentIndex = 0;
+          let autoSlideInterval;
+
+          // Crear elementos del carrusel
+          function createCarouselItems() {
+              carousel.innerHTML = "";
+              indicatorsContainer.innerHTML = "";
+
+              // Crear elementos de carrusel
+              for (let i = 0; i < totalItems; i++) {
+                  const item = document.createElement("div");
+                  item.className = "carousel-item";
+                  item.setAttribute("data-modal", firmasData[i].id);
+
+                  const img = document.createElement("img");
+                  img.src = firmasData[i].image;
+                  img.alt = firmasData[i].title;
+                  img.className = "carousel-img";
+
+                  const caption = document.createElement("div");
+                  caption.className = "carousel-caption";
+
+                  const title = document.createElement("h3");
+                  title.textContent = firmasData[i].title;
+
+                  const description = document.createElement("p");
+                  description.textContent = firmasData[i].description;
+
+                  caption.appendChild(title);
+                  caption.appendChild(description);
+                  item.appendChild(img);
+                  item.appendChild(caption);
+                  carousel.appendChild(item);
+
+                  // Crear indicadores
+                  const indicator = document.createElement("div");
+                  indicator.className = "indicator";
+                  if (i === 0) indicator.classList.add("active");
+                  indicator.addEventListener("click", () => {
+                      stopAutoSlide();
+                      goToSlide(i);
+                      startAutoSlide();
+                  });
+                  indicatorsContainer.appendChild(indicator);
+              }
+
+              updateCarousel();
+          }
+
+          // Función para actualizar el carrusel
+          function updateCarousel() {
+              const items = document.querySelectorAll(".carousel-item");
+              const indicators = document.querySelectorAll(".indicator");
+
+              items.forEach((item, index) => {
+                  // Calcular la posición relativa al índice actual
+                  let position = index - currentIndex;
+
+                  // Ajustar para el efecto de carrusel infinito
+                  if (position < -totalItems / 2) position += totalItems;
+                  if (position > totalItems / 2) position -= totalItems;
+
+                  // Aplicar transformaciones según la posición
+                  if (position === 0) {
+                      // Elemento central
+                      item.style.transform = "translateX(-50%) scale(1)";
+                      item.style.opacity = "1";
+                      item.style.zIndex = "5";
+                      item.style.filter = "blur(0)";
+                      item.classList.add("active");
+                  } else if (position === -1 || position === 1) {
+                      // Elementos adyacentes
+                      const translateX = position * 300;
+                      item.style.transform = `translateX(calc(-50% + ${translateX}px)) scale(0.9)`;
+                      item.style.opacity = "0.8";
+                      item.style.zIndex = "4";
+                      item.style.filter = "blur(1px)";
+                      item.classList.remove("active");
+                  } else if (position === -2 || position === 2) {
+                      // Elementos más lejanos
+                      const translateX = position * 300;
+                      item.style.transform = `translateX(calc(-50% + ${translateX}px)) scale(0.85)`;
+                      item.style.opacity = "0.6";
+                      item.style.zIndex = "3";
+                      item.style.filter = "blur(2px)";
+                      item.classList.remove("active");
+                  } else {
+                      // Elementos fuera de vista
+                      item.style.transform = "translateX(calc(-50% + 800px)) scale(0.8)";
+                      item.style.opacity = "0";
+                      item.style.zIndex = "2";
+                      item.style.filter = "blur(3px)";
+                      item.classList.remove("active");
+                  }
+              });
+
+              // Actualizar indicadores
+              indicators.forEach((indicator, index) => {
+                  if (index === currentIndex) {
+                      indicator.classList.add("active");
+                  } else {
+                      indicator.classList.remove("active");
+                  }
+              });
+          }
+
+          // Función para ir a un slide específico
+          function goToSlide(index) {
+              currentIndex = index;
+              if (currentIndex < 0) currentIndex = totalItems - 1;
+              if (currentIndex >= totalItems) currentIndex = 0;
+              updateCarousel();
+          }
+
+          // Función para abrir modal
+          function openModal(modalId) {
+              const data = modalData[modalId];
+
+              if (data && modalImg && modalTitle && modalText) {
+                  modalImg.src = data.image;
+                  modalImg.alt = data.title;
+                  modalTitle.textContent = data.title;
+                  modalText.textContent = data.text;
+
+                  modalOverlay.classList.add("active");
+                  document.body.style.overflow = "hidden";
+              }
+          }
+
+          // Función para cerrar modal
+          function closeModal() {
+              modalOverlay.classList.remove("active");
+              document.body.style.overflow = "auto";
+          }
+
+          // Función para avanzar al siguiente slide
+          function nextSlide() {
+              goToSlide(currentIndex + 1);
+          }
+
+          // Función para retroceder al slide anterior
+          function prevSlide() {
+              goToSlide(currentIndex - 1);
+          }
+
+          // Función para iniciar la transición automática
+          function startAutoSlide() {
+              autoSlideInterval = setInterval(nextSlide, 3000); // Cambiar cada 3 segundos
+          }
+
+          // Función para detener la transición automática
+          function stopAutoSlide() {
+              clearInterval(autoSlideInterval);
+          }
+
+          // Event listeners para botones de navegación
+          nextButton.addEventListener("click", function () {
+              stopAutoSlide();
+              nextSlide();
+              startAutoSlide();
+          });
+
+          prevButton.addEventListener("click", function () {
+              stopAutoSlide();
+              prevSlide();
+              startAutoSlide();
+          });
+
+          // Event listeners para las imágenes
+          carousel.addEventListener("click", function (e) {
+              const item = e.target.closest(".carousel-item");
+              if (item) {
+                  const modalId = item.getAttribute("data-modal");
+                  openModal(modalId);
+              }
+          });
+
+          // Event listener para cerrar modal
+          if (modalClose) {
+              modalClose.addEventListener("click", closeModal);
+          }
+
+          // Cerrar modal al hacer clic fuera del contenido
+          modalOverlay.addEventListener("click", function (e) {
+              if (e.target === modalOverlay) {
+                  closeModal();
+              }
+          });
+
+          // Pausar auto slide al pasar el ratón por encima
+          carousel.addEventListener("mouseenter", stopAutoSlide);
+
+          // Reanudar auto slide al quitar el ratón
+          carousel.addEventListener("mouseleave", startAutoSlide);
+
+          // Inicializar el carrusel y comenzar la transición automática
+          createCarouselItems();
+          startAutoSlide();
+
+          // Navegación con teclado
+          document.addEventListener("keydown", function (e) {
+              if (e.key === "ArrowRight") {
+                  stopAutoSlide();
+                  nextSlide();
+                  startAutoSlide();
+              } else if (e.key === "ArrowLeft") {
+                  stopAutoSlide();
+                  prevSlide();
+                  startAutoSlide();
+                  // espace para salir del modal
+              } else if (e.key === "Escape") {
+                  closeModal();
+              }
+          });
+      }
+
+      // Inicializar el carrusel cuando el DOM esté cargado
+      document.addEventListener("DOMContentLoaded", function() {
+          setupFirmasCarousel();
+      });
+    </script>
+  </body>
+</html>
